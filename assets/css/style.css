@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #132743;
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+}
+
+.col-md-25 {
+    width: 25%;
+}
+
+.col-md-75 {
+    width: 75%;
+}
+
+.col-md-50 {
+    width: 50%;
+}
+
+input[type=text],
+input[type=password],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.register,
+.search {
+    background-color: #d7385e;
+    color: white;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+.lucky {
+    background-color: #edc988;
+    color: white;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+.flexbox-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-register-header {
+    margin-top: 5%;
+}
+
+.login-register-header h1 {
+    font-size: 48px;
+}
+
+.register-box h2 {
+    font-weight: 300;
+    text-align: center;
+}
+
+.register-box {
+    padding: 40px 50px;
+    background: white;
+}
+
+.success-msg,
+.error-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.success-msg {
+    color: #270;
+    background-color: #DFF2BF;
+}
+
+.error-msg {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+
+.main-header {
+    background-color: white;
+    padding: 20px 70px;
+    box-shadow: 5px 10px 18px #e2e2e2;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 22px;
+    display: inline;
+}
+
+nav {
+    padding: 3px;
+    display: inline;
+    float: right;
+}
+
+.upload-btn {
+    background: #edc988;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#name::after {
+    content: "▾";
+    margin-left: 5px;
+}
+
+.homepage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10%;
+}
+
+.homepage h2 {
+    font-size: 40px;
+    font-weight: 300;
+}
+
+.homepage input {
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
