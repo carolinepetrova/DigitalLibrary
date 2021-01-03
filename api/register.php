@@ -14,29 +14,29 @@ $conn = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 $user = new User($conn);
-
-$user->name = $data->name;
-$user->email = $data->email;
-$user->password = $data->password;
+$user->setName($data->name);
+$user->setEmail($data->email);
+$user->setPassword($data->password);
 
 // create the user
-if(!empty($user->name) && !empty($user->email) &&
-    !empty($user->password) && $user->create()){
- 
+if (
+    !empty($user->name) && !empty($user->email) &&
+    !empty($user->password) && $user->create()
+) {
+
     http_response_code(200);
- 
+
     // display message: user was created
-    echo json_encode(array("message" => "User was created."));
+    echo json_encode(array("output" => "success", "message" => "Успешна регистрация! Ще бъдете пренасочени към логин страницата след 5 секунди."));
 }
- 
+
 // message if unable to create user
-else{
- 
+else {
+
     // set response code
     http_response_code(400);
- 
+
     // display message: unable to create user
-    echo json_encode(array("message" => "Unable to create user."));
+    echo json_encode(array("output" => "error", "message" => "Възникна грешка при създаването на потребител."));
 }
 $conn->close();
-?>
