@@ -8,6 +8,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once 'connection/database.php';
 include_once 'model/user.php';
 
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    header($_SERVER["SERVER_PROTOCOL"] . " 405 Method Not Allowed", true, 405);
+    exit;
+}
+
 $database = new Database();
 $conn = $database->getConnection();
 

@@ -1,10 +1,12 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/rest-api-authentication-example/");
+header("Access-Control-Allow-Origin: http://localhost/DigialLibrary");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+include_once 'connection/database.php';
 include_once 'core.php';
+include 'model/document.php';
 include_once 'php-jwt/src/BeforeValidException.php';
 include_once 'php-jwt/src/ExpiredException.php';
 include_once 'php-jwt/src/SignatureInvalidException.php';
@@ -12,44 +14,38 @@ include_once 'php-jwt/src/JWT.php';
 
 use \Firebase\JWT\JWT;
 
-$data = json_decode(file_get_contents("php://input"));
+$database = new Database();
+$conn = $database->getConnection();
 
-// get jwt
-$jwt = isset($data->jwt) ? $data->jwt : "";
+$jwt = isset($_POST['jwt']) ? $_POST['jwt'] : "";
 
 if ($jwt) {
-
-    // if decode succeed, show user details
     try {
-        // decode jwt
         $decoded = JWT::decode($jwt, $key, array('HS256'));
-
-        // set response code
-        http_response_code(200);
-
-        // show user details
-        echo json_encode(array(
-            "authorization" => "success",
-            "message" => "Access granted.",
-            "data" => $decoded->data
-        ));
     } catch (Exception $e) {
-
-        // set response code
         http_response_code(401);
-
-        // tell the user access denied  & show error message
         echo json_encode(array(
-            "authorization" => "failure",
             "message" => "Access denied.",
+            "output" => "error",
             "error" => $e->getMessage()
         ));
     }
 } else {
-
-    // set response code
     http_response_code(401);
-
-    // tell the user access denied
-    echo json_encode(array("authorization" => "failure", "message" => "Access denied."));
+    echo json_encode(array(
+        "message" => "Access denied.",
+        "output" => "error"
+    ));
 }
+
+$document = new Document($conn);
+$document->setName($_POST['name']);
+$document->setDescription($_POST['description']);
+//$document->setKeywords($_POST['name']);
+$document->setOwner($decoded->data->id);
+$document->setFile($_FILES['file']);
+$temp = $_FILES['file'];
+echo json_encode(array(
+    "output" => "success",
+    "message" => $document->filename
+));

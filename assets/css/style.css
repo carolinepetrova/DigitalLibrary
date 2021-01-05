@@ -11,15 +11,23 @@ body {
 }
 
 .col-md-25 {
-    width: 25%;
+    width: 24.5%;
 }
 
 .col-md-75 {
-    width: 75%;
+    width: 74.5%;
 }
 
 .col-md-50 {
     width: 50%;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
 }
 
 input[type=text],
@@ -161,4 +169,17 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
+}
+
+.upload h2 {
+    font-size: 26px;
+    font-weight: 300;
 }
