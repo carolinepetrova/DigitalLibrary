@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Качване на документ | DigitalLibrary</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/main.js"></script>
+    <script>
+        (function () {
+            checkIfAuthorized();
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo">DigitalLibrary</div>
+        <nav>
+            <a class="upload-btn">Качи документ</a>
+            <div style="    display: inline;" id="name">Каролина Колева</div>
+        </nav>
+    </header>
+    <section class="upload">
+        <h2>Качване на документ/и</h2>
+        <div class="col-md-50">
+            <div id="message"></div>
+            <form id="add_documents">
+                <div class="elem">
+                    <h4>Документ 1</h4>
+                    <div class="col-md-75 inline-block margin-bottom-10">
+                        <input type="text" class="name" placeholder="Заглавие" />
+                    </div>
+                    <div class="col-md-25 inline-block margin-bottom-10">
+                        <select class="format">
+                            <option>html</option>
+                            <option>pdf</option>
+                        </select>
+                    </div>
+                    <div class="margin-bottom-10">
+                        <input type="text" class="keywords" placeholder="Ключови думи" />
+                    </div>
+                    <div class="margin-bottom-10">
+                        <textarea class="description" placeholder="Описание"></textarea>
+                    </div>
+                    <div>
+                        <label>Файл</label>
+                        <input class="file" type="file" />
+                    </div>
+                </div>
+            </form>
+            <div class="buttons">
+                <button type="button" style="margin-right: 5px" class="lucky" onclick="addUploadFields()">Добави още
+                    едно поле</button>
+                <button type="button" class="search" onclick="uploadDocuments()">Качване</button>
+            </div>
+        </div>
+    </section>
+</body>
+<footer>
+
+</footer>
+
+</html>

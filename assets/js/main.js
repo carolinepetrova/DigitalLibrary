@@ -7,7 +7,7 @@ const register = () => {
         email: emailVal,
         password: passwordVal
     }
-    submitRequest("./api/register.php", body, true, true, "login.html");
+    submitRequest("./api/register.php", JSON.stringify(body), true, true, "login.html");
 }
 
 const login = async () => {
@@ -17,7 +17,7 @@ const login = async () => {
         email: emailVal,
         password: passwordVal
     }
-    var response = await submitRequest("./api/login.php", body, true, true, "index.html");
+    var response = await submitRequest("./api/login.php", JSON.stringify(body), true, true, "index.html");
     console.log(response);
     if (response['jwt']) {
         setCookie("jwt", response['jwt'], 1);
@@ -52,7 +52,7 @@ const checkIfAuthorized = async () => {
     var body = {
         jwt: jwtVal
     }
-    var response = await submitRequest("./api/validate_token.php", body, false, false, "");
+    var response = await submitRequest("./api/validate_token.php", JSON.stringify(body), false, false, "");
     console.log(response);
     if (response['authorization'] == "failure") {
         window.location.href = "login.html";
@@ -64,8 +64,9 @@ const checkIfAuthorized = async () => {
 
 const submitRequest = (url, body, printOutput, refer, where) => {
     var response = fetch(url, {
+            mode: 'no-cors',
             method: 'post',
-            body: JSON.stringify(body),
+            body: body,
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             }
@@ -93,3 +94,40 @@ const submitRequest = (url, body, printOutput, refer, where) => {
         .catch(error => console.error(error));
     return response;
 }
+
+let count = 2;
+
+const addUploadFields = () => {
+    var place = document.getElementById("add_documents");
+    place.innerHTML += "<div class='elem'> <h4>Документ " + count++ + "</h4><div class='col-md-75 inline-block margin-bottom-10'> <input type='text' class='name' placeholder='Заглавие' /> </div> <div class='col-md-25 inline-block margin-bottom-10'> <select class='format'> <option>html</option> <option>pdf</option> </select> </div> <div class='margin-bottom-10'> <input type='text' class='keywords' placeholder='Ключови думи' /> </div> <div class='margin-bottom-10'> <textarea class='description' placeholder='Описание'></textarea> </div> <div> <label>Файл</label> <input class='file' type='file' /> </div> </div>";
+}
+
+const uploadDocuments = () => {
+    const nameArr = document.getElementsByClassName('name');
+    const formatArr = document.getElementsByClassName('format');
+    const keywordsArr = document.getElementsByClassName('keywords');
+    const descriptionArr = document.getElementsByClassName('description');
+    const filesArr = document.getElementsByClassName('file');
+
+    var array_of_data = [];
+
+    const formData = new FormData();
+    for (var i = 0; i < nameArr.length; i++) {
+        formData.append('name', nameArr[i].value);
+        formData.append('format', formatArr[i].value);
+        formData.append('keywords', keywordsArr[i].value);
+        formData.append('description', descriptionArr[i].value);
+        formData.append('file', filesArr[i].files[0]);
+        formData.append('jwt', getCookie('jwt'));
+        submitRequest("./api/upload_document.php", formData, true, false, "");
+    }
+
+}
+/*
+function func() {
+    var elem = document.getElementsByClassName("test");
+     Array.from(elem).forEach(function(navDom){
+     console.log(navDom.value);
+    });
+};
+*/
