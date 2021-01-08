@@ -30,10 +30,7 @@ class Document
 
     function setKeywords($value)
     {
-        if (empty($this->keywords)) {
-            $this->keywords = str_replace(' ', ',', $this->name);
-        }
-        $this->keywords = $this->keywords + "," + htmlspecialchars(strip_tags($value));
+        $this->keywords = htmlspecialchars(strip_tags($value));
     }
 
     function setFormat($value)
@@ -46,11 +43,46 @@ class Document
         $this->rating = htmlspecialchars(strip_tags($value));
     }
 
+    function getId()
+    {
+        return $this->id;
+    }
+
+    function getName()
+    {
+        return $this->name;
+    }
+
+    function getDescription()
+    {
+        return $this->description;
+    }
+
+    function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    function getFilename()
+    {
+        return $this->filename;
+    }
+
+    function getOwner()
+    {
+        return $this->owner;
+    }
+
+    function getRating()
+    {
+        return $this->rating;
+    }
+
     function setFile($value)
     {
-        $target_dir = "./";
+        $target_dir = "/Applications/XAMPP/xamppfiles/htdocs/DigitalLibrary/storage/";
         $date = date_create();
-        $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . $value["name"];
+        $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
         $this->filename = $target_file;
         if (!move_uploaded_file($value['tmp_name'], $target_file)) {
             return false;
@@ -63,16 +95,8 @@ class Document
         $this->owner = htmlspecialchars(strip_tags($value));
     }
 
-    function create($data)
+    function create()
     {
-        //TODO check if exists?
-        $this->setName($data->name);
-        $this->setDescription($data->description);
-        $this->setKeywords($data->keywords);
-        $this->setFormat($data->format);
-        $this->setFilename($data->filename);
-        $this->setOwner($data->filename);
-
         $queryStr = "INSERT INTO %s (name,description,keywords,format, filename, owner) values('%s', '%s', '%s','%s', '%s', '%s')";
         $query = sprintf(
             $queryStr,
@@ -86,8 +110,31 @@ class Document
         );
         // execute the query, also check if query was successful
         if ($this->conn->query($query)) {
-            return true;
+            return "";
         }
-        return false;
+        return $this->conn->error;
+    }
+
+    function getDocument($id)
+    {
+        $queryStr = "SELECT name, description, keywords, format, filename, owner,rating from %s where id = %s";
+        $query = sprintf($queryStr, $this->table_name, $id);
+
+        $result = $this->conn->query($query);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $this->id = $id;
+                $this->name = $row['name'];
+                $this->description = $row['description'];
+                $this->keywords = $row['keywords'];
+                $this->format = $row['format'];
+                $this->filename = $row['filename'];
+                $this->rating = $row['rating'];
+                $this->owner = $row['owner'];
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 }

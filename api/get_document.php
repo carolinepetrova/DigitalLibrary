@@ -1,12 +1,14 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/DigialLibrary");
+// SET HEADER
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 include_once 'connection/database.php';
 include_once 'core.php';
 include 'model/document.php';
+include 'model/user.php';
 include_once 'php-jwt/src/BeforeValidException.php';
 include_once 'php-jwt/src/ExpiredException.php';
 include_once 'php-jwt/src/SignatureInvalidException.php';
@@ -17,7 +19,7 @@ use \Firebase\JWT\JWT;
 $database = new Database();
 $conn = $database->getConnection();
 
-$jwt = isset($_POST['jwt']) ? $_POST['jwt'] : "";
+$jwt = isset($_GET['jwt']) ? $_GET['jwt'] : "";
 
 if ($jwt) {
     try {
@@ -39,24 +41,30 @@ if ($jwt) {
 }
 
 $document = new Document($conn);
-$document->setName($_POST['name']);
-$document->setDescription($_POST['description']);
-$document->setFormat($_POST['format']);
-$document->setKeywords($_POST['name']);
-$document->setOwner($decoded->data->id);
-if (!$document->setFile($_FILES['file'])) {
-    http_response_code(400);
+$user = new User($conn);
+
+if (!$document->getDocument($_GET['id'])) {
+    http_response_code(404);
     echo json_encode(array(
-        "message" => "Възникна проблем при качването на файл",
+        "message" => "Документът не е намерен.",
         "output" => "error"
     ));
-    return;
 }
+$user->getById($document->getOwner());
 
-$result = $document->create();
+$post_data = [
+    'id' => $document->getId(),
+    'name' => $document->getName(),
+    'description' => $document->getDescription(),
+    'keywords' => $document->getKeywords(),
+    'filename' => $document->getFilename(),
+    'rating' => $document->getRating(),
+    'user_name' => $user->name,
+];
 
 http_response_code(200);
 echo json_encode(array(
-    "message" => "Result " . $result,
-    "output" => "success"
+    "message" => "Успех",
+    "output" => "success",
+    "data" => json_encode($post_data)
 ));

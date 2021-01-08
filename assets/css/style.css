@@ -60,6 +60,16 @@ label {
     float: right;
 }
 
+.btn-red {
+    background-color: #d7385e;
+    color: white;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .lucky {
     background-color: #edc988;
     color: white;
@@ -182,4 +192,38 @@ nav {
 .upload h2 {
     font-size: 26px;
     font-weight: 300;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+
+}
+
+.doc-info {
+    margin-left: 25px;
+}
+
+.doc-info h3 {
+    margin-block-start: 0em;
+}
+
+#overlay {
+    width: 100%;
+    height: 550px;
+    border: 1px solid black;
+}
+
+#overlay p {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 30px;
+    justify-content: center;
+    font-size: 20px;
 }

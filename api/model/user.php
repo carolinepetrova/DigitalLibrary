@@ -60,4 +60,21 @@ class User
         }
         return true;
     }
+
+    function getById($id)
+    {
+        $queryStr = "select name,email from %s where id = %s";
+        $query = sprintf($queryStr, $this->table_name, $id);
+        $result = $this->conn->query($query);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $this->name = $row['name'];
+                $this->email = $row['email'];
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
 }

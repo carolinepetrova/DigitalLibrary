@@ -7,6 +7,7 @@
     <title>Начало | DigitalLibrary</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/main.js"></script>
+
     <script>
         (function () {
             checkIfAuthorized();
@@ -24,20 +25,14 @@
             <div style="display: inline;" id="name">Каролина Колева</div>
         </nav>
     </header>
-    <section class="homepage">
-        <h2>Търсене на документ</h2>
-        <div class="col-md-50">
-            <input type="text" placeholder="Въведете заглавие или ключови думи" />
-            <div class="buttons">
-                <button type="button" class="search ">Търсене</button> <button type="button" style="margin-left: 5px"
-                    class="lucky">Чувствам се
-                    късметлия</button>
-            </div>
-        </div>
+    <section>
+        <div id="view_document" class="upload"></div>
     </section>
 </body>
 <footer>
 
 </footer>
+
+<script src="assets/js/get_document.js"></script>
 
 </html>
