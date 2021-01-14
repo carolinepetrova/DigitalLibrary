@@ -61,20 +61,32 @@ class User
         return true;
     }
 
+
     function getById($id)
     {
-        $queryStr = "select name,email from %s where id = %s";
+        $queryStr = "select name,email,rating from %s where id = %s";
         $query = sprintf($queryStr, $this->table_name, $id);
         $result = $this->conn->query($query);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
+                $this->id = $id;
                 $this->name = $row['name'];
                 $this->email = $row['email'];
+                $this->rating = $row['rating'];
             }
         } else {
             return false;
         }
         return true;
+    }
+
+    function setRating($value)
+    {
+        $this->rating -= $value;
+        $queryStr = "UPDATE %s SET rating = %s WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $this->rating, $this->id);
+        $result = $this->conn->query($query);
+        return $result;
     }
 }

@@ -21,7 +21,13 @@
         <div class="logo"><a href="index" style="text-decoration: none; color: inherit;">DigitalLibrary</a></div>
         <nav>
             <a class="upload-btn" href="upload">Качи документ</a>
-            <div style="    display: inline;" id="name">Каролина Колева</div>
+            <div style="display: inline;" class="dropdown">
+                <button onclick="dropdown()" class="dropbtn" id="name"></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="view_loaned">Заети документи</a>
+                    <a href="#">Изход</a>
+                </div>
+            </div>
         </nav>
     </header>
     <section class="upload">

@@ -1,2 +1,2 @@
 <?php
-include 'view_document.html';
+include_once 'view_document.html';

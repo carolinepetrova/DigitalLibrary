@@ -29,6 +29,7 @@ const setCookie = (cname, cvalue, exdays) => {
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    console.log(document.cookie);
 }
 
 const getCookie = (cname) => {
@@ -121,4 +122,22 @@ const uploadDocuments = () => {
         submitRequest("./api/upload_document.php", formData, true, false, "");
     }
 
+}
+
+function dropdown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
 }

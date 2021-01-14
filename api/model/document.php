@@ -82,12 +82,26 @@ class Document
     {
         $target_dir = "/Applications/XAMPP/xamppfiles/htdocs/DigitalLibrary/storage/";
         $date = date_create();
-        $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
-        $this->filename = $target_file;
-        if (!move_uploaded_file($value['tmp_name'], $target_file)) {
-            return false;
+        if ($this->format == "html") {
+            $unzip = new ZipArchive;
+            $out = $unzip->open($value['tmp_name']);
+            if ($out === TRUE) {
+                $filename = pathinfo($value["name"], PATHINFO_FILENAME);
+                $unzip->extractTo($target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $filename);
+                $this->filename =  '/DigitalLibrary/storage/' . $filename . "/" . $filename . '_referat.html';
+                $unzip->close();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
+            $this->filename = $target_file;
+            if (!move_uploaded_file($value['tmp_name'], $target_file)) {
+                return false;
+            }
+            return true;
         }
-        return true;
     }
 
     function setOwner($value)

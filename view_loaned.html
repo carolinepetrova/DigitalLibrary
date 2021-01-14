@@ -1,20 +1,22 @@
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+    <title>Начало | DigitalLibrary</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/main.js"></script>
-
     <script>
         (function () {
             checkIfAuthorized();
         })();
     </script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
 </head>
 
-<body id="viewdocument">
+<body>
     <header class="main-header">
         <div class="logo"><a href="index" style="text-decoration: none; color: inherit;">DigitalLibrary</a></div>
         <nav>
@@ -28,8 +30,15 @@
             </div>
         </nav>
     </header>
-    <div id="view-document" class="view-document"></div>
+    <section class="view_loaned">
+        <h2>Заети документи</h2>
+        <div class="col-md-75 loaned-document" id="loaned-docs">
+        </div>
+    </section>
 </body>
-<script src="assets/js/view_document.js"></script>
+<footer>
+
+</footer>
+<script src="assets/js/view_loaned.js"></script>
 
 </html>
