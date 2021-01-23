@@ -95,9 +95,10 @@ class Document
                 return false;
             }
         } else {
-            $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
-            $this->filename = $target_file;
-            if (!move_uploaded_file($value['tmp_name'], $target_file)) {
+            $target_full = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
+
+            $this->filename =  '/DigitalLibrary/storage/' . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];;
+            if (!move_uploaded_file($value['tmp_name'], $target_full)) {
                 return false;
             }
             return true;

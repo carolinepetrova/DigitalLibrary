@@ -1,13 +1,44 @@
+const isFieldEmpty = (field) => {
+    return (field == null || field == "");
+}
+
+const throwError = (where, what) => {
+    var elem_error = document.getElementById(where);
+    elem_error.innerHTML = '<div class="error-msg">' + what + "</div>";
+    setTimeout(() => {
+        elem_error.removeChild(elem_error.children[0]);
+    }, 3000);
+}
+
 const register = () => {
     var nameVal = document.getElementById("name").value;
     var emailVal = document.getElementById("email").value;
     var passwordVal = document.getElementById("password").value;
+
+    let error = false;
+
+    if (isFieldEmpty(nameVal)) {
+        throwError("name-error", "Невалидно име");
+        error = true;
+    }
+
+    if (isFieldEmpty(emailVal)) {
+        throwError("email-error", "Невалиден имейл");
+        error = true;
+    }
+
+    if (isFieldEmpty(passwordVal)) {
+        throwError("password-error", "Невалидна парола");
+        error = true;
+    }
+
     var body = {
         name: nameVal,
         email: emailVal,
         password: passwordVal
     }
-    submitRequest("./api/register.php", JSON.stringify(body), true, true, "login.html");
+    if (!error)
+        submitRequest("./api/register.php", JSON.stringify(body), true, true, "login.html");
 }
 
 const login = async () => {
@@ -21,8 +52,11 @@ const login = async () => {
     console.log(response);
     if (response['jwt']) {
         setCookie("jwt", response['jwt'], 1);
+        window.location.href = "index";
     }
 }
+
+const exit = () => {}
 
 const setCookie = (cname, cvalue, exdays) => {
     var d = new Date();
@@ -48,6 +82,18 @@ const getCookie = (cname) => {
     return "";
 }
 
+const destroyCookie = (cname) => {
+    var cvalue = getCookie(cname);
+    var d = new Date();
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+const logout = () => {
+    destroyCookie('jwt');
+    window.location.href = "login?logout=true";
+}
+
 const checkIfAuthorized = async () => {
     var jwtVal = getCookie('jwt');
     var body = {
@@ -55,12 +101,33 @@ const checkIfAuthorized = async () => {
     }
 
     var response = await submitRequest("./api/validate_token.php", JSON.stringify(body), false, false, "");
-    console.log(jwtVal);
-    if (response['authorization'] == "failure") {
-        window.location.href = "login.html";
+    if (response['authorization'] === "failure") {
+        window.location.href = "login";
     } else {
+        var data = JSON.parse(response['data']);
         var elem = document.getElementById("name");
-        elem.innerHTML = response['data']['name'];
+        elem.innerHTML = data['name'];
+        var elem = document.getElementById("my_points");
+        elem.innerHTML = "Моите точки: " + data['rating'];
+    }
+}
+
+const checkIfLogged = async () => {
+    var jwtVal = getCookie('jwt');
+    var body = {
+        jwt: jwtVal
+    }
+
+    var response = await submitRequest("./api/validate_token.php", JSON.stringify(body), false, false, "");
+    if (response['authorization'] === "success") {
+        window.location.href = "index";
+    }
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const logout = urlParams.get("logout");
+    if (logout) {
+        var elem = document.getElementById("message");
+        elem.innerHTML = '<div class="success-msg">Успешно излязохте!</div>';
     }
 }
 
