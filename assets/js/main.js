@@ -143,7 +143,7 @@ const submitRequest = (url, body, printOutput, refer, where) => {
             return response.text();
         })
         .then((json) => {
-            console.log(text);
+            console.log(json);
             if (json['output'] == "success") {
                 if (printOutput) {
                     var elem = document.getElementById("message");
