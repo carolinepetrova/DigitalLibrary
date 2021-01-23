@@ -140,9 +140,10 @@ const submitRequest = (url, body, printOutput, refer, where) => {
                 'Content-type': 'application/json; charset=UTF-8',
             }
         }).then(response => {
-            return response.json();
+            return response.text();
         })
         .then((json) => {
+            console.log(text);
             if (json['output'] == "success") {
                 if (printOutput) {
                     var elem = document.getElementById("message");
