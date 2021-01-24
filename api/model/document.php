@@ -168,7 +168,7 @@ class Document
     function getDocumentsByKeyWords($words){
         $query = "SELECT * FROM `documents` WHERE ";
         foreach ($words as $word){
-            $query .= "keywords LIKE '%".$word."%' OR name LIKE '%".$word."%' OR ";
+            $query .= "UPPER(keywords) LIKE UPPER('%".$word."%') OR UPPER(name) LIKE UPPER('%".$word."%') OR ";
         }
         
         $query = substr($query, 0, strlen($query)-4);
