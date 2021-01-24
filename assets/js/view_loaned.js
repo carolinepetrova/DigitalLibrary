@@ -27,7 +27,7 @@ window.onload = async function () {
                 continue;
             }
             ++counter;
-            dateVal = date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear();
+            dateVal = date.getDate() + "/" + "0" + (parseInt(date.getMonth()) + 1) + "/" + date.getFullYear();
             elem.innerHTML += '<div class="loaned-doc-block"> <div style="display:inline"> <h3>' + elems[i]['doc_name'] + '</h3> <span style="margin-right:8px"><b>Автор:</b>' + elems[i]['owner'] + '</span><span style="margin-right:8px"> <b>Рейтинг:</b> ' + elems[i]['rating'] + '</span> <span style="margin-right:8px"><b>Достъпен до:</b> ' + dateVal + '</span> </div> <div style="display:inline; float:right;margin-top: -20px;"> <a class="view-doc-btn" href="http://localhost:8080/DigitalLibrary/view_document?doc=' + elems[i]['token'] + '">Преглед</a> <a class="rate-doc-btn" href="#">Оцени</a> </div> </div>'
         }
         if (counter == 0) {

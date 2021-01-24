@@ -180,6 +180,11 @@ const uploadDocuments = () => {
 
     const formData = new FormData();
     for (var i = 0; i < nameArr.length; i++) {
+        if (isFieldEmpty(nameArr[i].value) || isFieldEmpty(keywordsArr[i].value) ||
+            isFieldEmpty(filesArr[i].files[0]) || isFieldEmpty(descriptionArr[i].value)) {
+            throwError("message", "Всички полета са задължителни!");
+            return;
+        }
         formData.append('name', nameArr[i].value);
         formData.append('format', formatArr[i].options[formatArr[i].selectedIndex].text);
         formData.append('keywords', keywordsArr[i].value);
@@ -209,22 +214,22 @@ window.onclick = function (event) {
     }
 }
 
-function submitGetRequest(url){
+function submitGetRequest(url) {
     let response = fetch(url, {
-        mode: 'no-cors',
-        method: 'get'
-    }).then(response => {
-        return response.json();
-    })
-    .then((json) => {
-        return json;
-    })
-    .catch(error => console.error(error));
+            mode: 'no-cors',
+            method: 'get'
+        }).then(response => {
+            return response.json();
+        })
+        .then((json) => {
+            return json;
+        })
+        .catch(error => console.error(error));
 
     return response;
 }
 
-function createStarsFromRating(rating){
+function createStarsFromRating(rating) {
 
     let fullStar = document.createElement("i");
     fullStar.setAttribute("class", "fa fa-star orange");
@@ -234,48 +239,48 @@ function createStarsFromRating(rating){
     emptyStar.setAttribute("class", "fa fa-star-o orange");
 
     let stars = [];
-    for(let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
         stars.push(emptyStar.cloneNode(true));
     }
-    if(rating >= 0.5){
+    if (rating >= 0.5) {
         stars[0] = halfStar.cloneNode(true);
     }
-    if(rating >= 1){
+    if (rating >= 1) {
         stars[0] = fullStar.cloneNode(true);
     }
-    if(rating >= 1.5){
+    if (rating >= 1.5) {
         stars[1] = halfStar.cloneNode(true);
     }
-    if(rating >= 2){
+    if (rating >= 2) {
         stars[1] = fullStar.cloneNode(true);
     }
-    if(rating >= 2.5){
+    if (rating >= 2.5) {
         stars[2] = halfStar.cloneNode(true);
     }
-    if(rating >= 3){
+    if (rating >= 3) {
         stars[2] = fullStar.cloneNode(true);
     }
-    if(rating >= 3.5){
+    if (rating >= 3.5) {
         stars[3] = halfStar.cloneNode(true);
     }
-    if(rating >= 4){
+    if (rating >= 4) {
         stars[3] = fullStar.cloneNode(true);
     }
-    if(rating >= 4.5){
+    if (rating >= 4.5) {
         stars[4] = halfStar.cloneNode(true);
     }
-    if(rating >= 5){
+    if (rating >= 5) {
         stars[4] = fullStar.cloneNode(true);
     }
-    
+
     return stars;
 }
 
-function viewDocuments(response){
+function viewDocuments(response) {
     //clear documents from previous search if any
     let documentsContainer = document.getElementById("documents");
     documentsContainer.innerHTML = '';
-    if(response.status == 200){
+    if (response.status == 200) {
         let documents = JSON.parse(response.data);
         for (let i = 0; i < documents.length; i++) {
             //document container
@@ -292,7 +297,7 @@ function viewDocuments(response){
             let raitingContainer = document.createElement("span");
             raitingContainer.classList.add("ml-5");
             let stars = createStarsFromRating(documents[i].rating);
-            for(let i = 0; i < stars.length; i++){
+            for (let i = 0; i < stars.length; i++) {
                 raitingContainer.appendChild(stars[i]);
             }
             nameElement.appendChild(raitingContainer);
@@ -326,7 +331,7 @@ function viewDocuments(response){
             documentsContainer.appendChild(documentContainer);
         }
     }
-    if(response.status == 404){
+    if (response.status == 404) {
         let errorElement = document.createElement("div");
         errorElement.classList.add("error-msg");
         let errorText = document.createTextNode("Няма намерени реферати.");
@@ -334,7 +339,7 @@ function viewDocuments(response){
 
         documentsContainer.appendChild(errorElement);
     }
-    if(response.status == 400){
+    if (response.status == 400) {
         let errorElement = document.createElement("div");
         errorElement.classList.add("error-msg");
         let errorText = document.createTextNode("Моля, въведете ключови думи или натиснете 'Чувствам се късметлия'.");
@@ -343,14 +348,14 @@ function viewDocuments(response){
         documentsContainer.appendChild(errorElement);
     }
 }
-async function luckySearch(){
+async function luckySearch() {
     let url = './api/lucky_search.php';
     let response = await submitGetRequest(url);
     viewDocuments(response);
 }
 
-async function search(){
-    let searchTerm = document.getElementById("search-term").value; 
+async function search() {
+    let searchTerm = document.getElementById("search-term").value;
     let url = './api/search.php' + "?q=" + searchTerm;
 
     let response = await submitGetRequest(url);

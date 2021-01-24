@@ -55,8 +55,16 @@ if (!$document->setFile($_FILES['file'])) {
 
 $result = $document->create();
 
+if (!empty($result)) {
+    http_response_code(400);
+    echo json_encode(array(
+        "message" => "Възникна следният проблем: " . strval($result),
+        "output" => "success"
+    ));
+}
+
 http_response_code(200);
 echo json_encode(array(
-    "message" => "Result " . $result,
+    "message" => "Успешно качихте документ/ите.",
     "output" => "success"
 ));

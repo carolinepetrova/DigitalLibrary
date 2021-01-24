@@ -26,8 +26,9 @@ CREATE TABLE IF NOT EXISTS `loaned_documents` (
     `id` INT AUTO_INCREMENT,
     `doc_id` INT NOT NULL,
     `user_id` INT NOT NULL,
-    `date_loaned` TIMESTAMP NOT NULL,
-    `expiration_date` TIMESTAMP NOT NULL,
+    `date_loaned` VARCHAR(20) NOT NULL,
+    `expiration_date` VARCHAR(20) NOT NULL,
+    `token` VARCHAR(500),
     PRIMARY KEY (`id`), 
     FOREIGN KEY (`doc_id`) REFERENCES documents(`id`),
     FOREIGN KEY (`user_id`) REFERENCES users(`id`));
