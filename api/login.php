@@ -29,7 +29,6 @@ $user->setEmail($data->email);
 if (!$user->checkIfExists()) {
     http_response_code(401);
     echo json_encode(array("output" => "error", "message" => "Потребителят не съществува."));
-    return;
 } else if (password_verify($data->password, $user->password)) {
     $token = array(
         "iat" => $issued_at,
@@ -50,7 +49,7 @@ if (!$user->checkIfExists()) {
     echo json_encode(
         array(
             "output" => "success",
-            "message" => "Успешно влязохте.",
+            "message" => "Successful login.",
             "jwt" => $jwt
         )
     );

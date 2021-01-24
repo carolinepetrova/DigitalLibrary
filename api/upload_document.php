@@ -42,7 +42,7 @@ $document = new Document($conn);
 $document->setName($_POST['name']);
 $document->setDescription($_POST['description']);
 $document->setFormat($_POST['format']);
-$document->setKeywords($_POST['name']);
+$document->setKeywords($_POST['keywords']);
 $document->setOwner($decoded->data->id);
 if (!$document->setFile($_FILES['file'])) {
     http_response_code(400);
