@@ -357,22 +357,33 @@ nav {
     background: white;
     margin-bottom: 30px;
 }
-#documents{
+#documents {
     margin-top: 30px;
 }
 .orange {
     color: orange;
   }
-  .inline{
+.inline {
     display:inline;
   }
-  .ml-5{
+.ml-5 {
     margin-left:5px;
   }
-  .bold{
-      font-weight: bold;
+.bold {
+    font-weight: bold;
   }
-  .view-doc-btn-container{
+.view-doc-btn-container {
     float:right;
     margin-top: -20px;
   }
+.points {
+    border-bottom: 1px solid #d2d2d2;
+    background: #f5f5f5;
+    font-weight: 500;
+    padding: 12px 16px;
+    color: #132743;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    display: block;
+}
