@@ -151,4 +151,27 @@ class Document
         }
         return true;
     }
+
+    function getDocuments()
+    {
+        $queryStr = "SELECT * from %s ORDER BY rating DESC LIMIT 5";
+        $query = sprintf($queryStr, $this->table_name);
+
+        $result = $this->conn->query($query);
+
+        return $result;
+    }
+
+    function getDocumentsByKeyWords($words){
+        $query = "SELECT * FROM `documents` WHERE ";
+        foreach ($words as $word){
+            $query .= "keywords LIKE '%".$word."%' OR name LIKE '%".$word."%' OR ";
+        }
+        
+        $query = substr($query, 0, strlen($query)-4);
+        $query .= " ORDER By rating DESC";
+        $result = $this->conn->query($query);
+
+        return $result;
+    }
 }

@@ -351,9 +351,28 @@ nav {
     background: #d7385e;
 }
 
-.loaned-doc-block {
+.loaned-doc-block, .doc-block {
     padding: 10px 30px 30px 30px;
     box-shadow: 5px 10px 18px #e2e2e2;
     background: white;
     margin-bottom: 30px;
 }
+#documents{
+    margin-top: 30px;
+}
+.orange {
+    color: orange;
+  }
+  .inline{
+    display:inline;
+  }
+  .ml-5{
+    margin-left:5px;
+  }
+  .bold{
+      font-weight: bold;
+  }
+  .view-doc-btn-container{
+    float:right;
+    margin-top: -20px;
+  }
