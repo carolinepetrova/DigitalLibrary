@@ -314,8 +314,8 @@ function viewDocuments(response){
             viewButton.classList.add("view-doc-btn-container");
             let button = document.createElement("a");
             button.classList.add("view-doc-btn");
-            let viewLink = "http://localhost:8080/DigitalLibrary/view_document?doc=" + documents[i].id;
-            button.setAttribute("href", viewLink);
+            let previewLink = "http://localhost:8080/DigitalLibrary/preview_document?id=" + documents[i].id;
+            button.setAttribute("href", previewLink);
             let buttonText = document.createTextNode("Преглед");
             button.appendChild(buttonText)
             viewButton.appendChild(button);

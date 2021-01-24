@@ -35,6 +35,7 @@ $user_id = $jwt_decoded->data->id;
 
 // check if user has rating - done
 // substract points if has and update user - done
+// add points to owner of document
 // update loaned_documents
 // generate document token 
 
@@ -57,9 +58,39 @@ if ($user->rating < $_GET['points']) {
     return;
 }
 
+$document = new Document($conn);
+if (!$document->getDocument($_GET['doc_id'])) {
+    http_response_code(404);
+    echo json_encode(array(
+        "message" => "Документът не е намерен.",
+        "output" => "error",
+        "error" => $e->getMessage()
+    ));
+    return;
+}
+
+$ownerOfDocument = new User($conn);
+if (!$ownerOfDocument->getById($document->getOwner())) {
+    http_response_code(404);
+    echo json_encode(array(
+        "message" => "Потребителят не е намерен.",
+        "output" => "error",
+        "error" => $e->getMessage()
+    ));
+    return;
+}
+
 $conn->begin_transaction();
 
-if (!$user->setRating($_GET['points'])) {
+if (!$user->decrementRating($_GET['points'])) {
+    echo json_encode(array(
+        "message" => "Възникна грешка.",
+        "output" => "error"
+    ));
+    return;
+}
+
+if (!$ownerOfDocument->incrementRating($_GET['points'])) {
     echo json_encode(array(
         "message" => "Възникна грешка.",
         "output" => "error"
@@ -84,6 +115,7 @@ $token = array(
 $jwt = JWT::encode($token, $key);
 
 $result = $loaned_document->submit($jwt);
+
 $conn->commit();
 if (!$result) {
     echo json_encode(array(
