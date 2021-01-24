@@ -19,9 +19,20 @@ $conn = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 $user = new User($conn);
+
 $user->setName($data->name);
 $user->setEmail($data->email);
 $user->setPassword($data->password);
+
+if ($user->checkIfExists()) {
+
+    // set response code
+    http_response_code(400);
+
+    // display message: unable to create user
+    echo json_encode(array("output" => "error", "message" => "Вече съществува такъв потребител."));
+    return;
+}
 
 // create the user
 if (

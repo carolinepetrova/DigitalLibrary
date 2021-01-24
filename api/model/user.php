@@ -11,6 +11,7 @@ class User
     public $name;
     public $email;
     public $password;
+    public $rating;
 
     // constructor
     public function __construct($db)

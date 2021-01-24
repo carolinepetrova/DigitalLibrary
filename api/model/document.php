@@ -1,4 +1,5 @@
 <?php
+include_once "./util/constants.php";
 
 class Document
 {
@@ -80,24 +81,26 @@ class Document
 
     function setFile($value)
     {
-        $target_dir = "/Applications/XAMPP/xamppfiles/htdocs/DigitalLibrary/storage/";
+        $target_dir = SAVE_PATH;
         $date = date_create();
         if ($this->format == "html") {
             $unzip = new ZipArchive;
             $out = $unzip->open($value['tmp_name']);
             if ($out === TRUE) {
                 $filename = pathinfo($value["name"], PATHINFO_FILENAME);
-                $unzip->extractTo($target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $filename);
-                $this->filename =  '/DigitalLibrary/storage/' . $filename . "/" . $filename . '_referat.html';
+                $folder_name = $this->owner . "_" . date_timestamp_get($date) . "_" . $filename;
+                $unzip->extractTo($target_dir . $folder_name);
+                $this->filename =  SAVE_DIR . $folder_name . "/" . $filename . '_referat.html';
                 $unzip->close();
                 return true;
             } else {
                 return false;
             }
         } else {
-            $target_file = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
-            $this->filename = $target_file;
-            if (!move_uploaded_file($value['tmp_name'], $target_file)) {
+            $target_full = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
+
+            $this->filename =  SAVE_DIR . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];;
+            if (!move_uploaded_file($value['tmp_name'], $target_full)) {
                 return false;
             }
             return true;

@@ -1,0 +1,10 @@
+{
+    "name": "kolevak/digital-library",
+    "authors": [
+        {
+            "name": "Karolina Koleva",
+            "email": "kolevak@vmware.com"
+        }
+    ],
+    "require": {}
+}
