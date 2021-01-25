@@ -345,6 +345,8 @@ nav {
 
 .rate-doc-btn {
     background: #edc988;
+    border-color: #edc988;
+    border-style: solid;
 }
 
 .view-doc-btn {
@@ -386,4 +388,13 @@ nav {
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
     display: block;
+}
+.rating {
+    width: 20%;
+}
+optgroup { 
+    font-size:40px; 
+}
+.hidden {
+    display:none;
 }

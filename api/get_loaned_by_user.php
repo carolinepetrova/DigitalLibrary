@@ -44,7 +44,7 @@ if (!$user->getById($user_id)) {
     return;
 }
 
-$queryStr = "select loaned_documents.token, loaned_documents.expiration_date, documents.name as doc_name, documents.format, documents.rating, documents.filename, users.name as user_name from loaned_documents inner join documents on documents.id = loaned_documents.doc_id inner join users on documents.owner = users.id where user_id= %s";
+$queryStr = "select loaned_documents.doc_id, loaned_documents.token, loaned_documents.expiration_date, documents.name as doc_name, documents.format, documents.rating, documents.filename, users.name as user_name from loaned_documents inner join documents on documents.id = loaned_documents.doc_id inner join users on documents.owner = users.id where user_id= %s";
 $query = sprintf($queryStr, $user_id);
 $result = $conn->query($query);
 $arr = array();
@@ -57,7 +57,8 @@ if ($result->num_rows > 0) {
             "doc_name" => $row['doc_name'],
             "format" => $row['format'],
             "rating" => $row['rating'],
-            "owner" => $row['user_name']
+            "owner" => $row['user_name'],
+            "doc_id" => $row['doc_id']
         );
     }
 } else {

@@ -319,6 +319,8 @@ function viewDocuments(response){
             let buttonText = document.createTextNode("Преглед");
             button.appendChild(buttonText)
             viewButton.appendChild(button);
+            // ! rate !
+
             // append document and button to document container
             documentContainer.appendChild(documentElement);
             documentContainer.appendChild(viewButton);

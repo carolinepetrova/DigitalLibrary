@@ -9,6 +9,8 @@ class Document
     private $keywords;
     private $format;
     private $rating;
+    private $rating_sum;
+    private $votes_num;
     public $filename;
     private $owner;
     private $table_name = "documents";
@@ -134,7 +136,7 @@ class Document
 
     function getDocument($id)
     {
-        $queryStr = "SELECT name, description, keywords, format, filename, owner,rating from %s where id = %s";
+        $queryStr = "SELECT name, description, keywords, format, filename, owner, rating, rating_sum, votes_num from %s where id = %s";
         $query = sprintf($queryStr, $this->table_name, $id);
 
         $result = $this->conn->query($query);
@@ -147,6 +149,8 @@ class Document
                 $this->format = $row['format'];
                 $this->filename = $row['filename'];
                 $this->rating = $row['rating'];
+                $this->rating_sum = $row['rating_sum'];
+                $this->votes_num = $row['votes_num'];
                 $this->owner = $row['owner'];
             }
         } else {
@@ -176,5 +180,16 @@ class Document
         $result = $this->conn->query($query);
 
         return $result;
+    }
+
+    function rate($rating) {
+        $this->rating_sum += $rating;
+        $this->votes_num += 1;
+        $this->rating = (float) $this->rating_sum/ (float) $this->votes_num;
+        $this->rating = round($this->rating, 1);
+
+        $queryStr = "UPDATE %s SET rating_sum = %s, votes_num = %s, rating = %s WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $this->rating_sum, $this->votes_num, $this->rating, $this->id);
+        $this->conn->query($query);
     }
 }
