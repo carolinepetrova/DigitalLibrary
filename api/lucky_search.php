@@ -6,14 +6,25 @@ header("Access-Control-Allow-Methods: GET");
 include_once 'connection/database.php';
 include 'model/document.php';
 include 'model/user.php';
+include_once 'util/utils.php';
+
+use \Firebase\JWT\JWT;
 
 $database = new Database();
 $connection = $database->getConnection();
 
-$document = new Document($connection);
-$user = new User($connection);
+$jwt_decoded = checkJWT($_GET['jwt']);
 
-$documents = $document->getDocuments();
+if ($jwt_decoded == "error") {
+    return;
+}
+
+$user_id = $jwt_decoded->data->id;
+
+$document = new Document($connection);
+$author = new User($connection);
+
+$documents = $document->getDocuments($user_id);
 $count = $documents->num_rows;
 
 if($count > 0){
@@ -21,11 +32,11 @@ if($count > 0){
 
     while ($row = $documents->fetch_assoc()){
         extract($row);
-        $user->getById($owner);
+        $author->getById($owner);
         $document_item = array(
             "id" => $id,
             "name" => $name,
-            "author" => $user->name,
+            "author" => $author->name,
             "rating" => $rating
         );
   

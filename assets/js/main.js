@@ -319,8 +319,6 @@ function viewDocuments(response){
             let buttonText = document.createTextNode("Преглед");
             button.appendChild(buttonText)
             viewButton.appendChild(button);
-            // ! rate !
-
             // append document and button to document container
             documentContainer.appendChild(documentElement);
             documentContainer.appendChild(viewButton);
@@ -346,14 +344,16 @@ function viewDocuments(response){
     }
 }
 async function luckySearch(){
-    let url = './api/lucky_search.php';
+    let jwtVal = getCookie('jwt');
+    let url = './api/lucky_search.php' + '?jwt=' + jwtVal;
     let response = await submitGetRequest(url);
     viewDocuments(response);
 }
 
 async function search(){
     let searchTerm = document.getElementById("search-term").value; 
-    let url = './api/search.php' + "?q=" + searchTerm;
+    let jwtVal = getCookie('jwt');
+    let url = './api/search.php' + "?q=" + searchTerm + '&' + 'jwt=' + jwtVal;
 
     let response = await submitGetRequest(url);
     viewDocuments(response);

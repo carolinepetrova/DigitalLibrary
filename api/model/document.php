@@ -159,24 +159,26 @@ class Document
         return true;
     }
 
-    function getDocuments()
+    function getDocuments($user_id)
     {
-        $queryStr = "SELECT * from %s ORDER BY rating DESC LIMIT 5";
-        $query = sprintf($queryStr, $this->table_name);
+        $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC LIMIT 5";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
 
         $result = $this->conn->query($query);
 
         return $result;
     }
 
-    function getDocumentsByKeyWords($words){
-        $query = "SELECT * FROM `documents` WHERE ";
+    function getDocumentsByKeyWords($words, $user_id){
+        $queryStr = "SELECT * FROM %s WHERE owner != %s AND ( ";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
+
         foreach ($words as $word){
-            $query .= "UPPER(keywords) LIKE UPPER('%".$word."%') OR UPPER(name) LIKE UPPER('%".$word."%') OR ";
+            $query .= " UPPER(keywords) LIKE UPPER('%".$word."%') OR UPPER(name) LIKE UPPER('%".$word."%') OR ";
         }
         
         $query = substr($query, 0, strlen($query)-4);
-        $query .= " ORDER By rating DESC";
+        $query .= ") ORDER By rating DESC";
         $result = $this->conn->query($query);
 
         return $result;
