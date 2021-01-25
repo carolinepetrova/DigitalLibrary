@@ -106,4 +106,13 @@ class LoanedDocument
         }
         return true;
     }
+
+    public function getLoansCount($doc_id){
+        $queryStr = "SELECT * from %s WHERE doc_id = %s";
+        $query = sprintf($queryStr, $this->table_name, $doc_id);
+
+        $result = $this->conn->query($query);
+        
+        return $result->num_rows;
+    }
 }

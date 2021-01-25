@@ -33,25 +33,18 @@
             </div>
         </nav>
     </header>
-    <section class="homepage">
-        <h2>Търсене на документ</h2>
-        <div class="col-md-50">
-            <input id="search-term" type="text" value="" placeholder="Въведете заглавие или ключови думи" />
-            <div class="buttons">
-                <button onclick="search()" type="button" class="search ">Търсене</button> <button onclick="luckySearch()" type="button" style="margin-left: 5px"
-                    class="lucky">Чувствам се
-                    късметлия</button>
-            </div>
-        </div>
-
-        <div class="col-md-50" id="documents">
+    <section class="view_loaned">
+        <h2>Моите документи</h2>
+        <div class="col-md-75 document" id="docs">
             
         </div>
-    </section>
 
+        <div class="col-md-75 hidden error-msg">Документът не може да бъде изтрит.</div>
+    </section>
 </body>
 <footer>
 
 </footer>
-<script src="assets/js/view_all_documents.js"></script>
+<script src="assets/js/view_my_documents.js"></script>
+
 </html>

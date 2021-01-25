@@ -194,4 +194,20 @@ class Document
         
         return $result;
     }
+
+    function getDocumentsOfUser($user_id){
+        $queryStr = "SELECT * from %s WHERE owner = %s ORDER BY rating DESC";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
+
+        $result = $this->conn->query($query);
+        
+        return $result;
+    }
+
+    function deleteDocument($doc_id){
+        $queryStr = "DELETE from %s WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $doc_id);
+
+        $result = $this->conn->query($query);
+    }
 }

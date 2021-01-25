@@ -419,3 +419,8 @@ optgroup {
     text-decoration: underline;
     cursor: pointer;
 }
+.trash-btn{
+    background-color: white;
+    border: none;
+    color: grey;
+}
