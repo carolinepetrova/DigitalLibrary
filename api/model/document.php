@@ -159,9 +159,6 @@ class Document
         return true;
     }
 
-<<<<<<< Updated upstream
-    function getDocumentsByKeyWords($words, $user_id){
-=======
     function getDocuments($user_id)
     {
         $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC LIMIT 5";
@@ -174,7 +171,6 @@ class Document
 
     function getDocumentsByKeyWords($words, $user_id)
     {
->>>>>>> Stashed changes
         $queryStr = "SELECT * FROM %s WHERE owner != %s AND ( ";
         $query = sprintf($queryStr, $this->table_name, $user_id);
 
@@ -207,20 +203,22 @@ class Document
         $query = sprintf($queryStr, $this->table_name, $user_id);
 
         $result = $this->conn->query($query);
-        
+
         return $result;
     }
 
-    function getDocumentsOfUser($user_id){
+    function getDocumentsOfUser($user_id)
+    {
         $queryStr = "SELECT * from %s WHERE owner = %s ORDER BY rating DESC";
         $query = sprintf($queryStr, $this->table_name, $user_id);
 
         $result = $this->conn->query($query);
-        
+
         return $result;
     }
 
-    function deleteDocument($doc_id){
+    function deleteDocument($doc_id)
+    {
         $queryStr = "DELETE from %s WHERE id = %s";
         $query = sprintf($queryStr, $this->table_name, $doc_id);
 
