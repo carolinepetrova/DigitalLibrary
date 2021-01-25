@@ -92,7 +92,7 @@ class Document
                 $filename = pathinfo($value["name"], PATHINFO_FILENAME);
                 $folder_name = $this->owner . "_" . date_timestamp_get($date) . "_" . $filename;
                 $unzip->extractTo($target_dir . $folder_name);
-                $this->filename =  SAVE_DIR . $folder_name . "/" . $filename . '_referat.html';
+                $this->filename =  $folder_name . "/" . $filename . '_referat.html';
                 $unzip->close();
                 return true;
             } else {
@@ -101,7 +101,7 @@ class Document
         } else {
             $target_full = $target_dir . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];
 
-            $this->filename =  SAVE_DIR . $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];;
+            $this->filename =  $this->owner . "_" . date_timestamp_get($date) . "_" . $value["name"];;
             if (!move_uploaded_file($value['tmp_name'], $target_full)) {
                 return false;
             }
@@ -147,7 +147,7 @@ class Document
                 $this->description = $row['description'];
                 $this->keywords = $row['keywords'];
                 $this->format = $row['format'];
-                $this->filename = $row['filename'];
+                $this->filename = SAVE_DIR . $row['filename'];
                 $this->rating = $row['rating'];
                 $this->rating_sum = $row['rating_sum'];
                 $this->votes_num = $row['votes_num'];
@@ -159,25 +159,41 @@ class Document
         return true;
     }
 
+<<<<<<< Updated upstream
     function getDocumentsByKeyWords($words, $user_id){
+=======
+    function getDocuments($user_id)
+    {
+        $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC LIMIT 5";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
+
+        $result = $this->conn->query($query);
+
+        return $result;
+    }
+
+    function getDocumentsByKeyWords($words, $user_id)
+    {
+>>>>>>> Stashed changes
         $queryStr = "SELECT * FROM %s WHERE owner != %s AND ( ";
         $query = sprintf($queryStr, $this->table_name, $user_id);
 
-        foreach ($words as $word){
-            $query .= " UPPER(keywords) LIKE UPPER('%".$word."%') OR UPPER(name) LIKE UPPER('%".$word."%') OR ";
+        foreach ($words as $word) {
+            $query .= " UPPER(keywords) LIKE UPPER('%" . $word . "%') OR UPPER(name) LIKE UPPER('%" . $word . "%') OR ";
         }
-        
-        $query = substr($query, 0, strlen($query)-4);
+
+        $query = substr($query, 0, strlen($query) - 4);
         $query .= ") ORDER By rating DESC";
         $result = $this->conn->query($query);
 
         return $result;
     }
 
-    function rate($rating) {
+    function rate($rating)
+    {
         $this->rating_sum += $rating;
         $this->votes_num += 1;
-        $this->rating = (float) $this->rating_sum/ (float) $this->votes_num;
+        $this->rating = (float) $this->rating_sum / (float) $this->votes_num;
         $this->rating = round($this->rating, 1);
 
         $queryStr = "UPDATE %s SET rating_sum = %s, votes_num = %s, rating = %s WHERE id = %s";

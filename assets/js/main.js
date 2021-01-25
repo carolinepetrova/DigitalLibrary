@@ -146,7 +146,7 @@ const submitRequest = (url, body, printOutput, refer, where) => {
             if (json['output'] == "success") {
                 if (printOutput) {
                     var elem = document.getElementById("message");
-                    elem.innerHTML = '<div class="success-msg">' + json['message'] + '</div>';
+                    elem.innerHTML += '<div class="success-msg">' + json['message'] + '</div>';
                 }
                 if (refer)
                     window.setTimeout(function () {
@@ -182,7 +182,7 @@ const uploadDocuments = () => {
     for (var i = 0; i < nameArr.length; i++) {
         if (isFieldEmpty(nameArr[i].value) || isFieldEmpty(keywordsArr[i].value) ||
             isFieldEmpty(filesArr[i].files[0]) || isFieldEmpty(descriptionArr[i].value)) {
-            throwError("message", "Всички полета са задължителни!");
+            throwError("message", "Възникна проблем при качването на Документ " + (i + 1) + ": Всички полета са задължителни!");
             return;
         }
         formData.append('name', nameArr[i].value);
@@ -349,15 +349,15 @@ function viewDocuments(response, showErrorMessage) {
     }
 }
 
-async function luckySearch(){
+async function luckySearch() {
     let jwtVal = getCookie('jwt');
     let url = './api/lucky_search.php' + '?jwt=' + jwtVal;
     let response = await submitGetRequest(url);
     viewDocuments(response, true);
 }
 
-async function search(){
-    let searchTerm = document.getElementById("search-term").value; 
+async function search() {
+    let searchTerm = document.getElementById("search-term").value;
     let jwtVal = getCookie('jwt');
     let url = './api/search.php' + "?q=" + searchTerm + '&' + 'jwt=' + jwtVal;
 

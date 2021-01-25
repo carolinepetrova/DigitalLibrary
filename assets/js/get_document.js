@@ -91,15 +91,15 @@ const loanDocument = async () => {
         let success = '<h3> Успешно заявихте документът!</h3>';
         success += '<p>Може да го достъпите на следния линк</p>';
         let link = 'http://localhost:8080/DigitalLibrary/view_document?doc=' + data['jwt'];
-        success +=  '<p><input class="link-contaier" type="text" value="' + link + '"/></p>';
+        success += '<p><input class="link-contaier" type="text" value="' + link + '"/></p>';
         elem.innerHTML = success;
 
         let linkContainer = document.getElementsByClassName('link-contaier')[0];
         linkContainer.onclick = function () {
             window.open(
                 link,
-                '_blank' 
-              );
+                '_blank'
+            );
         }
     } else {
         var elem = document.getElementById('loan-cont');

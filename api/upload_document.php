@@ -7,6 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once 'connection/database.php';
 include_once 'core.php';
 include 'model/document.php';
+include 'model/user.php';
 include_once 'php-jwt/src/BeforeValidException.php';
 include_once 'php-jwt/src/ExpiredException.php';
 include_once 'php-jwt/src/SignatureInvalidException.php';
@@ -55,15 +56,26 @@ if (!$document->setFile($_FILES['file'])) {
 }
 
 $result = $document->create();
-$user = new User($conn);
-$user->updateRatingAfterUpload($decoded->data->id);
 
 if (!empty($result)) {
     http_response_code(400);
     echo json_encode(array(
         "message" => "Възникна следният проблем: " . strval($result),
-        "output" => "success"
+        "output" => "failure"
     ));
+    return;
+}
+
+$user = new User($conn);
+$points_result = $user->updateRatingAfterUpload($decoded->data->id);
+
+if (!$points_result) {
+    http_response_code(400);
+    echo json_encode(array(
+        "message" => "Възникна следният проблем: " . strval($points_result),
+        "output" => "failure"
+    ));
+    return;
 }
 
 http_response_code(200);

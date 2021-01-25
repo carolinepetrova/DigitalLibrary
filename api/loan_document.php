@@ -121,6 +121,17 @@ if (!$ownerOfDocument->incrementRating($_GET['points'])) {
 $loaned_document = new LoanedDocument($conn);
 $loaned_document->setLoanedDocument($_GET['doc_id'], $user_id, $_GET['expiration_date']);
 
+$conn->commit();
+if ($loaned_document->checkIfDocIsLoaned()) {
+    echo json_encode(array(
+        "message" => "Вече сте получили достъп до следния документ.",
+        "output" => "error"
+    ));
+    $conn->rollback();
+    return;
+}
+
+
 $token = array(
     "iat" => $issued_at,
     "exp" => time() + 3600 * 24 *  $_GET['expiration_date'], // this is the formula for days

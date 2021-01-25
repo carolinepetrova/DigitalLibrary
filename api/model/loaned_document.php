@@ -107,6 +107,7 @@ class LoanedDocument
         return true;
     }
 
+<<<<<<< Updated upstream
     public function getLoansCount($doc_id){
         $queryStr = "SELECT * from %s WHERE doc_id = %s";
         $query = sprintf($queryStr, $this->table_name, $doc_id);
@@ -114,5 +115,13 @@ class LoanedDocument
         $result = $this->conn->query($query);
         
         return $result->num_rows;
+=======
+    public function checkIfDocIsLoaned()
+    {
+        $queryStr = "SELECT * from %s where user_id = %s and doc_id = %s and expiration_date > '%s'";
+        $query = sprintf($queryStr, $this->table_name, $this->user_id, $this->doc_id, $this->date_loaned);
+        $result = $this->conn->query($query);
+        return ($result->num_rows > 0);
+>>>>>>> Stashed changes
     }
 }
