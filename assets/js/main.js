@@ -276,7 +276,7 @@ function createStarsFromRating(rating) {
     return stars;
 }
 
-function viewDocuments(response) {
+function viewDocuments(response, showErrorMessage) {
     //clear documents from previous search if any
     let documentsContainer = document.getElementById("documents");
     documentsContainer.innerHTML = '';
@@ -331,7 +331,7 @@ function viewDocuments(response) {
             documentsContainer.appendChild(documentContainer);
         }
     }
-    if (response.status == 404) {
+    if (response.status == 404 && showErrorMessage) {
         let errorElement = document.createElement("div");
         errorElement.classList.add("error-msg");
         let errorText = document.createTextNode("Няма намерени реферати.");
@@ -339,7 +339,7 @@ function viewDocuments(response) {
 
         documentsContainer.appendChild(errorElement);
     }
-    if (response.status == 400) {
+    if (response.status == 400 && showErrorMessage) {
         let errorElement = document.createElement("div");
         errorElement.classList.add("error-msg");
         let errorText = document.createTextNode("Моля, въведете ключови думи или натиснете 'Чувствам се късметлия'.");
@@ -353,7 +353,7 @@ async function luckySearch(){
     let jwtVal = getCookie('jwt');
     let url = './api/lucky_search.php' + '?jwt=' + jwtVal;
     let response = await submitGetRequest(url);
-    viewDocuments(response);
+    viewDocuments(response, true);
 }
 
 async function search(){
@@ -362,5 +362,12 @@ async function search(){
     let url = './api/search.php' + "?q=" + searchTerm + '&' + 'jwt=' + jwtVal;
 
     let response = await submitGetRequest(url);
-    viewDocuments(response);
+    viewDocuments(response, true);
+}
+
+async function viewAllDocuments(){
+    let jwtVal = getCookie('jwt');
+    let url = './api/get_all_documents.php' + '?jwt=' + jwtVal;
+    let response = await submitGetRequest(url);
+    viewDocuments(response, false);
 }

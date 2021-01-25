@@ -159,16 +159,6 @@ class Document
         return true;
     }
 
-    function getDocuments($user_id)
-    {
-        $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC LIMIT 5";
-        $query = sprintf($queryStr, $this->table_name, $user_id);
-
-        $result = $this->conn->query($query);
-
-        return $result;
-    }
-
     function getDocumentsByKeyWords($words, $user_id){
         $queryStr = "SELECT * FROM %s WHERE owner != %s AND ( ";
         $query = sprintf($queryStr, $this->table_name, $user_id);
@@ -193,5 +183,15 @@ class Document
         $queryStr = "UPDATE %s SET rating_sum = %s, votes_num = %s, rating = %s WHERE id = %s";
         $query = sprintf($queryStr, $this->table_name, $this->rating_sum, $this->votes_num, $this->rating, $this->id);
         $this->conn->query($query);
+    }
+
+    function getAllDocuments($user_id)
+    {
+        $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
+
+        $result = $this->conn->query($query);
+        
+        return $result;
     }
 }

@@ -43,14 +43,9 @@ if($count > 0){
         array_push($documents_array, $document_item);
     }
 
-    //shuffle documents
-    shuffle($documents_array);
-    // leave only 5 of them
-    $slice_array = array_slice($documents_array, 0, 5, true);
-    
     http_response_code(200);
     echo json_encode(array(
-        "data" => json_encode($slice_array),
+        "data" => json_encode($documents_array),
         "status" => 200
     ));
     
