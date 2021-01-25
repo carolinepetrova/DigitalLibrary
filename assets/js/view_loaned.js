@@ -101,14 +101,14 @@ window.onload = async function () {
             dateVal = date.getDate() + "/" + date.getMonth() + 1 + "/" + date.getFullYear();
             console.log(elems[i]['token']);
             let document = '<div class="loaned-doc-block"> <div style="display:inline"> <h3>' + elems[i]['doc_name'] + '</h3> <span style="margin-right:8px"><b>Автор:</b>' + elems[i]['owner'] + '</span><span style="margin-right:8px"> <b>Рейтинг:</b> ' + elems[i]['rating'] + '</span> <span style="margin-right:8px"><b>Достъпен до:</b> ' + dateVal + '</span> </div> <div style="display:inline; float:right;margin-top: -20px;"> <a class="view-doc-btn" href="http://localhost:8080/DigitalLibrary/view_document?doc=' + elems[i]['token'] + '">Преглед</a>'
-            document += '<button type="button" class="btn-red" onclick="rate(' +  elems[i]['doc_id']  + ')">Оцени</button>';
+            document += '<button type="button" class="rate-doc-btn" onclick="rate(' +  elems[i]['doc_id']  + ')">Оцени</button>';
             document += '<div class="modal" id="modal' + elems[i]['doc_id'] + '">';
             document += '<div class="modal-content">';
             document += '<span class="close" id="close' + elems[i]['doc_id'] + '">&times;</span>';
             document += '<div id="rate-cont"> <form><label>Оцени</label>';
             document += '<select class="rates" id="rates' + elems[i]['doc_id'] + '">';
             document += '<optgroup><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></optgroup></select>';
-            document += '<button type="button" onclick="submitRate(' + elems[i]['doc_id'] + ')" class="btn-red">Оцени</button>';
+            document += '<button type="button" onclick="submitRate(' + elems[i]['doc_id'] + ')" class="btn-yellow">Оцени</button>';
             document += '<div class="error-msg hidden" id="error' + elems[i]['doc_id'] + '">Нещо се обърка. Моля, опитайте по-късно.</div>';
             document += '<div class="success-msg hidden" id="success' + elems[i]['doc_id'] + '">Оценката е записана успешно!</div>';
             document +='</form></div></div></div></div></div>'

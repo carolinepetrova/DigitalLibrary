@@ -70,6 +70,16 @@ label {
     cursor: pointer;
 }
 
+.btn-yellow {
+    background: #edc988;
+    color: white;
+    margin-top: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .lucky {
     background-color: #edc988;
     color: white;
