@@ -401,10 +401,11 @@ optgroup {
 .mt-20{
     margin-top:20px;
 }
-.link{
+.link, .link-contaier{
     text-decoration: none;
     color: #0366d6
 }
-.link:hover{
+.link:hover, .link-contaier:hover{
     text-decoration: underline;
+    cursor: pointer;
 }
