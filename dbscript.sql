@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS `documents` (
     `keywords` VARCHAR(150) NOT NULL, 
     `format` ENUM('pdf','html') NOT NULL,
     `rating` FLOAT DEFAULT 0, 
+    `rating_sum` FLOAT DEFAULT 0,
+    `votes_num` FLOAT DEFAULT 0,
     `filename` VARCHAR(150) NOT NULL, 
     `owner` INT NOT NULL, 
     PRIMARY KEY (`id`), 

@@ -44,6 +44,7 @@ $document->setDescription($_POST['description']);
 $document->setFormat($_POST['format']);
 $document->setKeywords($_POST['keywords']);
 $document->setOwner($decoded->data->id);
+
 if (!$document->setFile($_FILES['file'])) {
     http_response_code(400);
     echo json_encode(array(
@@ -54,6 +55,8 @@ if (!$document->setFile($_FILES['file'])) {
 }
 
 $result = $document->create();
+$user = new User($conn);
+$user->updateRatingAfterUpload($decoded->data->id);
 
 if (!empty($result)) {
     http_response_code(400);

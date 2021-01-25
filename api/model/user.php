@@ -82,11 +82,29 @@ class User
         return true;
     }
 
-    function setRating($value)
+    function decrementRating($value)
     {
         $this->rating -= $value;
         $queryStr = "UPDATE %s SET rating = %s WHERE id = %s";
         $query = sprintf($queryStr, $this->table_name, $this->rating, $this->id);
+        $result = $this->conn->query($query);
+        return $result;
+    }
+
+
+    function incrementRating($value)
+    {
+        $this->rating += $value;
+        $queryStr = "UPDATE %s SET rating = %s WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $this->rating, $this->id);
+        $result = $this->conn->query($query);
+        return $result;
+    }
+
+    function updateRatingAfterUpload($id)
+    {
+        $queryStr = "UPDATE %s SET rating = (SELECT rating from %s  WHERE id = %s) + 5 WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $this->table_name,$id, $id);
         $result = $this->conn->query($query);
         return $result;
     }

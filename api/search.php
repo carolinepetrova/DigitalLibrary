@@ -6,19 +6,30 @@ header("Access-Control-Allow-Methods: GET");
 include_once 'connection/database.php';
 include 'model/document.php';
 include 'model/user.php';
+include_once 'util/utils.php';
+
+use \Firebase\JWT\JWT;
 
 $database = new Database();
 $connection = $database->getConnection();
 
+$jwt_decoded = checkJWT($_GET['jwt']);
+
+if ($jwt_decoded == "error") {
+    return;
+}
+
+$user_id = $jwt_decoded->data->id;
+
 $document = new Document($connection);
-$user = new User($connection);
+$author = new User($connection);
 
 if(isset($_GET['q']) && $_GET['q']){
     $q = preg_replace('/\s\s+/', ' ', $_GET['q']);
 
     $words = explode(' ', $q);
 
-    $documents = $document->getDocumentsByKeyWords($words);
+    $documents = $document->getDocumentsByKeyWords($words, $user_id);
     $count = $documents->num_rows;
     
     if($count > 0){
@@ -26,11 +37,11 @@ if(isset($_GET['q']) && $_GET['q']){
     
         while ($row = $documents->fetch_assoc()){
             extract($row);
-            $user->getById($owner);
+            $author->getById($owner);
             $document_item = array(
                 "id" => $id,
                 "name" => $name,
-                "author" => $user->name,
+                "author" => $author->name,
                 "rating" => $rating
             );
       

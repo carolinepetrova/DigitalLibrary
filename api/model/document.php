@@ -9,6 +9,8 @@ class Document
     private $keywords;
     private $format;
     private $rating;
+    private $rating_sum;
+    private $votes_num;
     public $filename;
     private $owner;
     private $table_name = "documents";
@@ -134,7 +136,7 @@ class Document
 
     function getDocument($id)
     {
-        $queryStr = "SELECT name, description, keywords, format, filename, owner,rating from %s where id = %s";
+        $queryStr = "SELECT name, description, keywords, format, filename, owner, rating, rating_sum, votes_num from %s where id = %s";
         $query = sprintf($queryStr, $this->table_name, $id);
 
         $result = $this->conn->query($query);
@@ -147,6 +149,8 @@ class Document
                 $this->format = $row['format'];
                 $this->filename = $row['filename'];
                 $this->rating = $row['rating'];
+                $this->rating_sum = $row['rating_sum'];
+                $this->votes_num = $row['votes_num'];
                 $this->owner = $row['owner'];
             }
         } else {
@@ -155,26 +159,39 @@ class Document
         return true;
     }
 
-    function getDocuments()
+    function getDocuments($user_id)
     {
-        $queryStr = "SELECT * from %s ORDER BY rating DESC LIMIT 5";
-        $query = sprintf($queryStr, $this->table_name);
+        $queryStr = "SELECT * from %s WHERE owner != %s ORDER BY rating DESC LIMIT 5";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
 
         $result = $this->conn->query($query);
 
         return $result;
     }
 
-    function getDocumentsByKeyWords($words){
-        $query = "SELECT * FROM `documents` WHERE ";
+    function getDocumentsByKeyWords($words, $user_id){
+        $queryStr = "SELECT * FROM %s WHERE owner != %s AND ( ";
+        $query = sprintf($queryStr, $this->table_name, $user_id);
+
         foreach ($words as $word){
-            $query .= "keywords LIKE '%".$word."%' OR name LIKE '%".$word."%' OR ";
+            $query .= " UPPER(keywords) LIKE UPPER('%".$word."%') OR UPPER(name) LIKE UPPER('%".$word."%') OR ";
         }
         
         $query = substr($query, 0, strlen($query)-4);
-        $query .= " ORDER By rating DESC";
+        $query .= ") ORDER By rating DESC";
         $result = $this->conn->query($query);
 
         return $result;
+    }
+
+    function rate($rating) {
+        $this->rating_sum += $rating;
+        $this->votes_num += 1;
+        $this->rating = (float) $this->rating_sum/ (float) $this->votes_num;
+        $this->rating = round($this->rating, 1);
+
+        $queryStr = "UPDATE %s SET rating_sum = %s, votes_num = %s, rating = %s WHERE id = %s";
+        $query = sprintf($queryStr, $this->table_name, $this->rating_sum, $this->votes_num, $this->rating, $this->id);
+        $this->conn->query($query);
     }
 }

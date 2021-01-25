@@ -319,8 +319,8 @@ function viewDocuments(response) {
             viewButton.classList.add("view-doc-btn-container");
             let button = document.createElement("a");
             button.classList.add("view-doc-btn");
-            let viewLink = "http://localhost:8080/DigitalLibrary/view_document?doc=" + documents[i].id;
-            button.setAttribute("href", viewLink);
+            let previewLink = "http://localhost:8080/DigitalLibrary/preview_document?id=" + documents[i].id;
+            button.setAttribute("href", previewLink);
             let buttonText = document.createTextNode("Преглед");
             button.appendChild(buttonText)
             viewButton.appendChild(button);
@@ -348,15 +348,18 @@ function viewDocuments(response) {
         documentsContainer.appendChild(errorElement);
     }
 }
-async function luckySearch() {
-    let url = './api/lucky_search.php';
+
+async function luckySearch(){
+    let jwtVal = getCookie('jwt');
+    let url = './api/lucky_search.php' + '?jwt=' + jwtVal;
     let response = await submitGetRequest(url);
     viewDocuments(response);
 }
 
-async function search() {
-    let searchTerm = document.getElementById("search-term").value;
-    let url = './api/search.php' + "?q=" + searchTerm;
+async function search(){
+    let searchTerm = document.getElementById("search-term").value; 
+    let jwtVal = getCookie('jwt');
+    let url = './api/search.php' + "?q=" + searchTerm + '&' + 'jwt=' + jwtVal;
 
     let response = await submitGetRequest(url);
     viewDocuments(response);
