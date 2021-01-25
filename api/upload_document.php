@@ -58,8 +58,16 @@ $result = $document->create();
 $user = new User($conn);
 $user->updateRatingAfterUpload($decoded->data->id);
 
+if (!empty($result)) {
+    http_response_code(400);
+    echo json_encode(array(
+        "message" => "Възникна следният проблем: " . strval($result),
+        "output" => "success"
+    ));
+}
+
 http_response_code(200);
 echo json_encode(array(
-    "message" => "Result " . $result,
+    "message" => "Успешно качихте документ/ите.",
     "output" => "success"
 ));

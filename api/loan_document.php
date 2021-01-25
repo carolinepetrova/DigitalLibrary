@@ -50,6 +50,26 @@ if (!$user->getById($user_id)) {
     return;
 }
 
+$document = new Document($conn);
+
+if (!$document->getDocument($_GET['doc_id'])) {
+    http_response_code(404);
+    echo json_encode(array(
+        "message" => "Възникна грешка.",
+        "output" => "error"
+    ));
+    return;
+}
+
+if ($document->getOwner() == $user_id) {
+    http_response_code(400);
+    echo json_encode(array(
+        "message" => "Не можете да заявявате собствен документ!",
+        "output" => "error"
+    ));
+    return;
+}
+
 if ($user->rating < $_GET['points']) {
     echo json_encode(array(
         "message" => "Нямате достатъчно точки за този документ.",
